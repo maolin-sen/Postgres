@@ -154,8 +154,7 @@ StartupDecodingContext(List *output_plugin_options,
 					   LogicalOutputPluginWriterUpdateProgress update_progress)
 {
 	ReplicationSlot *slot;
-	MemoryContext context,
-				old_context;
+	MemoryContext context,old_context;
 	LogicalDecodingContext *ctx;
 
 	/* shorter lines... */

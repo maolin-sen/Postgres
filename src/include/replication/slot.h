@@ -63,6 +63,7 @@ typedef struct ReplicationSlotPersistentData
 
 	/*
 	 * xmin horizon for catalog tuples
+	 * 最小事物ID
 	 *
 	 * NB: This may represent a value that hasn't been written to disk yet;
 	 * see notes for effective_xmin, below.

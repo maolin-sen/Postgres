@@ -76,6 +76,7 @@ main(int argc, char *argv[])
 
 	/*
 	 * Platform-specific startup hacks
+	 * 特定于平台的启动技巧
 	 */
 	startup_hacks(progname);
 
@@ -184,7 +185,7 @@ main(int argc, char *argv[])
 	/*
 	 * Dispatch to one of various subprograms depending on first argument.
 	 */
-
+	//启动方式
 	if (argc > 1 && strcmp(argv[1], "--check") == 0)
 		BootstrapModeMain(argc, argv, true);
 	else if (argc > 1 && strcmp(argv[1], "--boot") == 0)

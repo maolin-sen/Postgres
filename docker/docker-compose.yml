@@ -1,0 +1,53 @@
+version: '3'
+services: 
+  app: 
+    build: 
+        context: . 
+        dockerfile: docker/php/Dockerfile 
+    image: ci-docker 
+    container_name: tarwis_crm_container 
+    ports: 
+        - "8080:80"
+    volumes: 
+       #bind mount app to container folder /var/www/tarwis 
+        - ./app:/var/www/tarwis 
+    #by defining the same "user defined network", all containers can talk to each other 
+    #do NOT use link as it may not be supported in future 
+    networks: 
+      - appnet 
+    environment: 
+      #env variables, used by your application
+      DB_HOSTNAME: postgres 
+      #this points to the postgres db's name 
+      DB_DATABASE: yourDBName 
+      DB_PORT: 5432 
+      DB_USERNAME: yourUserName 
+      DB_PASSWORD: yourPassword
+  
+
+  postgres: 
+    build: 
+        context: . dockerfile: docker/postgres/Dockerfile
+    image: postgres 
+    #when container_name is specified, as 
+    #container name is always unique you cannot scale a service beyond 1 container 
+    container_name: pg_container 
+    restart: always 
+    environment: 
+        #specify db name 
+        POSTGRES_DB: yourDBName 
+        #default is postgres but custom it here for clarity 
+        POSTGRES_USER: postgres 
+        POSTGRES_PASSWORD: hardToGuess 
+    ports: 
+      - "15432:5432" 
+    #by defining the same "user defined network", all containers can talk to each other 
+    networks: 
+      - appnet 
+
+#definition of all networks
+networks: 
+  #with default settings (which is a load-balanced overlay network) 
+  appnet: 
+
+#no need of volumes

@@ -19,6 +19,13 @@
 #include "storage/shmem.h"
 #include "storage/spin.h"
 
+/*
+WALSNDSTATE_STARTUP：表示 WAL 发送进程处于启动状态。
+WALSNDSTATE_BACKUP：表示 WAL 发送进程处于备份状态。
+WALSNDSTATE_CATCHUP：表示 WAL 发送进程处于追赶状态。
+WALSNDSTATE_STREAMING：表示 WAL 发送进程处于流复制状态。
+WALSNDSTATE_STOPPING：表示 WAL 发送进程正在停止中。
+*/
 typedef enum WalSndState
 {
 	WALSNDSTATE_STARTUP = 0,

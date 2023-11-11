@@ -1413,10 +1413,9 @@ AutoVacWorkerFailed(void)
 }
 
 /* SIGUSR2: a worker is up and running, or just finished, or failed to fork */
-static void
-avl_sigusr2_handler(SIGNAL_ARGS)
+static void avl_sigusr2_handler(SIGNAL_ARGS)
 {
-	int			save_errno = errno;
+	int	save_errno = errno;
 
 	got_SIGUSR2 = true;
 	SetLatch(MyLatch);

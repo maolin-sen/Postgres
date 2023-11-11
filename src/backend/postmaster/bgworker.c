@@ -862,11 +862,10 @@ StartBackgroundWorker(void)
 }
 
 /*
- * Register a new static background worker.
- *
- * This can only be called directly from postmaster or in the _PG_init
- * function of a module library that's loaded by shared_preload_libraries;
- * otherwise it will have no effect.
+	注册一个新的静态后台工作者,
+	该注册过程只能直接从 postmaster 进程中调用，
+	或者在一个由 shared_preload_libraries 加载的模块库的 _PG_init 函数中调用，
+	否则将没有任何效果。
  */
 void
 RegisterBackgroundWorker(BackgroundWorker *worker)

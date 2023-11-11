@@ -1,0 +1,9 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "array": "c",
+        "*.m4": "m4",
+        "ios": "c",
+        "postgres.h": "c"
+    }
+}

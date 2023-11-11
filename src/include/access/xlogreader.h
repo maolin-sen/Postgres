@@ -69,6 +69,11 @@ typedef void (*WALSegmentOpenCB) (XLogReaderState *xlogreader,
 								  TimeLineID *tli_p);
 typedef void (*WALSegmentCloseCB) (XLogReaderState *xlogreader);
 
+/*
+	XLogPageReadCB page_read：用于读取 XLog 页面的回调函数。
+	WALSegmentOpenCB segment_open：用于打开指定的 WAL 段文件的回调函数。
+	WALSegmentCloseCB segment_close：用于关闭 WAL 段文件的回调函数。
+*/
 typedef struct XLogReaderRoutine
 {
 	/*
@@ -113,7 +118,27 @@ typedef struct XLogReaderRoutine
 	 */
 	WALSegmentCloseCB segment_close;
 } XLogReaderRoutine;
+/*
+这是一个 C 语言的宏定义，用于创建一个带有初始值的结构体指针。
 
+#define XL_ROUTINE(...) &(XLogReaderRoutine){__VA_ARGS__}
+这个宏定义使用了变长参数 __VA_ARGS__，该参数可以接受不定数量的参数，并将它们作为初始化结构体的值。
+
+在这个宏定义中，XL_ROUTINE 可以根据需要在代码中使用，以快速创建一个指向 XLogReaderRoutine 结构体的指针，并使用传递给宏的参数作为结构体的初始值。
+
+例如，如果 XLogReaderRoutine 结构体定义如下：
+typedef struct XLogReaderRoutine
+{
+    // 结构体成员
+    int member1;
+    char member2;
+    // ...
+} XLogReaderRoutine;
+那么，通过使用 XL_ROUTINE 宏，可以方便地创建一个指向 XLogReaderRoutine 结构体的指针，并初始化成员变量的值：
+
+XLogReaderRoutine *routine = XL_ROUTINE(42, 'A');
+上述代码将创建一个 XLogReaderRoutine 结构体指针 routine，并将 member1 初始化为 42，member2 初始化为 'A'。
+*/
 #define XL_ROUTINE(...) &(XLogReaderRoutine){__VA_ARGS__}
 
 typedef struct

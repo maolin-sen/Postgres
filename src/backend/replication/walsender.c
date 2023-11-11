@@ -113,16 +113,15 @@ WalSndCtlData *WalSndCtl = NULL;
 WalSnd	   *MyWalSnd = NULL;
 
 /* Global state */
+//am_walsender 是 PostgreSQL 中的一个全局布尔变量，用于标识当前进程是否是一个 WAL sender 进程。
 bool		am_walsender = false;	/* Am I a walsender process? */
-bool		am_cascading_walsender = false; /* Am I cascading WAL to another
-											 * standby? */
+//am_cascading_walsender 是 PostgreSQL 中的一个全局布尔变量，用于标识当前的 WAL sender 进程是否是级联的。
+bool		am_cascading_walsender = false; /* Am I cascading WAL to another standby? */
 bool		am_db_walsender = false;	/* Connected to a database? */
 
 /* User-settable parameters for walsender */
-int			max_wal_senders = 0;	/* the maximum number of concurrent
-									 * walsenders */
-int			wal_sender_timeout = 60 * 1000; /* maximum time to send one WAL
-											 * data message */
+int			max_wal_senders = 0;	/* the maximum number of concurrent walsenders */
+int			wal_sender_timeout = 60 * 1000; /* maximum time to send one WAL data message */
 bool		log_replication_commands = false;
 
 /*
@@ -689,17 +688,13 @@ StartReplication(StartReplicationCmd *cmd)
 	TimeLineID	FlushTLI;
 
 	/* create xlogreader for physical replication */
-	xlogreader =
-		XLogReaderAllocate(wal_segment_size, NULL,
-						   XL_ROUTINE(.segment_open = WalSndSegmentOpen,
-									  .segment_close = wal_segment_close),
-						   NULL);
+	xlogreader = XLogReaderAllocate(wal_segment_size, NULL,XL_ROUTINE(.segment_open = WalSndSegmentOpen,
+																	  .segment_close = wal_segment_close),NULL);
 
 	if (!xlogreader)
-		ereport(ERROR,
-				(errcode(ERRCODE_OUT_OF_MEMORY),
-				 errmsg("out of memory"),
-				 errdetail("Failed while allocating a WAL reading processor.")));
+		ereport(ERROR,(errcode(ERRCODE_OUT_OF_MEMORY),
+						errmsg("out of memory"),
+						errdetail("Failed while allocating a WAL reading processor.")));
 
 	/*
 	 * We assume here that we're logging enough information in the WAL for
@@ -915,8 +910,7 @@ StartReplication(StartReplicationCmd *cmd)
  * set every time WAL is flushed.
  */
 static int
-logical_read_xlog_page(XLogReaderState *state, XLogRecPtr targetPagePtr, int reqLen,
-					   XLogRecPtr targetRecPtr, char *cur_page)
+logical_read_xlog_page(XLogReaderState *state, XLogRecPtr targetPagePtr, int reqLen, XLogRecPtr targetRecPtr, char *cur_page)
 {
 	XLogRecPtr	flushptr;
 	int			count;
@@ -1291,8 +1285,7 @@ StartLogicalReplication(StartReplicationCmd *cmd)
 	 * Do this before sending a CopyBothResponse message, so that any errors
 	 * are reported early.
 	 */
-	logical_decoding_ctx =
-		CreateDecodingContext(cmd->startpoint, cmd->options, false,
+	logical_decoding_ctx = CreateDecodingContext(cmd->startpoint, cmd->options, false,
 							  XL_ROUTINE(.page_read = logical_read_xlog_page,
 										 .segment_open = WalSndSegmentOpen,
 										 .segment_close = wal_segment_close),
@@ -1310,8 +1303,7 @@ StartLogicalReplication(StartReplicationCmd *cmd)
 	pq_flush();
 
 	/* Start reading WAL from the oldest required WAL. */
-	XLogBeginRead(logical_decoding_ctx->reader,
-				  MyReplicationSlot->data.restart_lsn);
+	XLogBeginRead(logical_decoding_ctx->reader,MyReplicationSlot->data.restart_lsn);
 
 	/*
 	 * Report the location after which we'll send out further commits as the
@@ -2488,8 +2480,7 @@ WalSndLoop(WalSndSendDataCallback send_data)
 		 * ourselves, and the output buffer is empty, it's time to exit
 		 * streaming.
 		 */
-		if (streamingDoneReceiving && streamingDoneSending &&
-			!pq_is_send_pending())
+		if (streamingDoneReceiving && streamingDoneSending && !pq_is_send_pending())
 			break;
 
 		/*
@@ -2549,9 +2540,7 @@ WalSndLoop(WalSndSendDataCallback send_data)
 		 * its additional actions.  For physical replication, also block if
 		 * caught up; its send_data does not block.
 		 */
-		if ((WalSndCaughtUp && send_data != XLogSendLogical &&
-			 !streamingDoneSending) ||
-			pq_is_send_pending())
+		if ((WalSndCaughtUp && send_data != XLogSendLogical && !streamingDoneSending) || pq_is_send_pending())
 		{
 			long		sleeptime;
 			int			wakeEvents;

@@ -74,6 +74,12 @@ typedef struct DropReplicationSlotCmd
 
 /* ----------------------
  *		START_REPLICATION command
+NodeTag type：一个枚举值，用于标识当前数据结构类型.
+ReplicationKind kind：表示复制类型的枚举值.
+char* slotname：一个字符串指针，表示复制槽的名称.
+TimeLineID timeline：用于标识时间线的整数值.
+XLogRecPtr startpoint：表示起始位置的 XLog 日志记录指针.
+List* options：一个指向一个链表的指针，用于存储配置选项.
  * ----------------------
  */
 typedef struct StartReplicationCmd

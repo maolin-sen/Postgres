@@ -609,6 +609,7 @@ PostmasterMain(int argc, char *argv[])
 	 * Allocated data that needs to be available to backends should be
 	 * allocated in TopMemoryContext.
 	 */
+	//1.创建TopMemoryContext
 	PostmasterContext = AllocSetContextCreate(TopMemoryContext,
 											  "Postmaster",
 											  ALLOCSET_DEFAULT_SIZES);
@@ -646,6 +647,7 @@ PostmasterMain(int argc, char *argv[])
 	 * postmaster/autovacuum.c, postmaster/pgarch.c, postmaster/syslogger.c,
 	 * postmaster/bgworker.c and postmaster/checkpointer.c.
 	 */
+	//2.设置信号处理函数
 	pqinitmask();
 	PG_SETMASK(&BlockSig);
 
@@ -924,7 +926,7 @@ PostmasterMain(int argc, char *argv[])
 		SetConfigOption("log_min_messages", "FATAL", PGC_SUSET,
 						PGC_S_OVERRIDE);
 	}
-
+	//3.检查目录配置
 	/* Verify that DataDir looks reasonable */
 	checkDataDir();
 
@@ -987,6 +989,7 @@ PostmasterMain(int argc, char *argv[])
 				(errmsg_internal("-----------------------------------------")));
 	}
 
+	//4.单个进程锁
 	/*
 	 * Create lockfile for data directory.
 	 *
@@ -1022,6 +1025,12 @@ PostmasterMain(int argc, char *argv[])
 
 	/*
 	 * process any libraries that should be preloaded at postmaster start
+	 process_shared_preload_libraries() 函数就是负责处理 shared_preload_libraries 参数并加载相应的共享库的。
+	 5.这个函数通常在 PostgreSQL 服务器的初始化过程中被调用。
+     预加载共享库的一个主要用途是添加自定义的功能或者钩子到 PostgreSQL 服务器中。
+	 例如，你可以创建一个共享库，实现一些自定义的访问控制逻辑，
+	 然后通过 shared_preload_libraries 参数将这个库预加载到 PostgreSQL 服务器中，
+	 这样你的访问控制逻辑就会在服务器运行期间一直生效。
 	 */
 	process_shared_preload_libraries();
 
@@ -1475,6 +1484,7 @@ PostmasterMain(int argc, char *argv[])
 	/* Some workers may be scheduled to start now */
 	maybe_start_bgworkers();
 
+	//接收请求
 	status = ServerLoop();
 
 	/*

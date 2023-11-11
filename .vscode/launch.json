@@ -1,0 +1,127 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(lldb) pg Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/backend/postgres",
+            "args": [
+                "-D",
+                "/Users/xys/pgdata/data"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "(lldb) pg Launch help",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/backend/postgres",
+            "args": [
+                "--help",
+                ""
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+        },
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/src/backend/postgres",
+            "MIMode": "lldb"
+        },
+        {
+            "name": "postgres --help",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/backend/postgres",
+            "args": [
+                "--help"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "psql",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/psql",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "postgres",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/backend/postgres",
+            "args": [
+                "-D",
+                "~/init_data"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {                    "description": "Enable pretty-printing for gdb",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "initdb",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bin/initdb/initdb",
+            "args": [
+                "-D",
+                "~/init_data"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                }
+            ]
+        }
+    ]
+}

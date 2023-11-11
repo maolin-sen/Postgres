@@ -47,6 +47,19 @@ typedef union ListCell
 	Oid			oid_value;
 } ListCell;
 
+/*
+List 数据结构的定义。这是一个动态数组，用于存储一系列的元素。以下是每个字段的含义：
+
+type: 这是一个 NodeTag 枚举值，表示列表的类型。可能的值包括 T_List（用于存储一般的元素），T_IntList（用于存储整数元素），和 T_OidList（用于存储对象标识符元素）。
+
+length: 这是一个整数，表示当前列表中的元素数量。
+
+max_length: 这是一个整数，表示 elements 数组的分配长度。当添加新的元素时，如果 length 已经等于 max_length，那么 elements 数组将被重新分配以容纳更多的元素。
+
+elements: 这是一个指向 ListCell 的指针，表示一个可重新分配的元素数组。每个 ListCell 包含一个元素和一个指向下一个 ListCell 的指针。
+
+initial_elements: 这是一个 ListCell 数组，用于存储初始的元素。这个数组的大小是可变的，由 FLEXIBLE_ARRAY_MEMBER 宏定义。如果 elements 指针等于 initial_elements，那么表示元素数组没有单独分配，而是存储在 List 结构的内部。
+*/
 typedef struct List
 {
 	NodeTag		type;			/* T_List, T_IntList, or T_OidList */

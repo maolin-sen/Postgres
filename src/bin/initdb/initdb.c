@@ -2820,7 +2820,7 @@ initialize_data_directory(void)
 	check_ok();
 }
 
-
+// 数据库初始化
 int
 main(int argc, char *argv[])
 {
